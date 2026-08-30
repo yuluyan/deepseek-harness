@@ -2,6 +2,7 @@
 import { Context, Service } from '@deepseek-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
 import type { CreditSnapshot } from '@deepseek-ai/dsh-api-credit-widget/types'
+import { RemoteError } from '@deepseek-ai/dsh-typert-protocol'
 import type { RemoteResult } from '@deepseek-ai/dsh-typert-protocol'
 import { LocaleRuntime } from '@deepseek-ai/dsh-client-locale/client'
 import { SlotRegistry } from '@deepseek-ai/dsh-client-ui-renderer/client'
@@ -104,7 +105,7 @@ describe('ui-api-credit-widget apply', () => {
 
   it('returns an empty list when the Remote carrier reports failure', async () => {
     const b = await bench()
-    const failure = { ok: false as const, error: { code: 'internal', message: 'offline', details: {} } }
+    const failure = { ok: false as const, error: new RemoteError('gateway/internal', 'offline', {}) }
     b.list.mockResolvedValueOnce(failure)
     b.refresh.mockResolvedValueOnce(failure)
     const actions = (b.entry()!.inject as unknown as () => CreditWidgetInjected)()
