@@ -34,7 +34,7 @@ async function bench(options: { registrationFailure?: boolean } = {}) {
 
   const collapse = ctx.slots.register({
     name: 'root',
-    children: { 'conversation.session.header.actions': { kind: 'list', scope: 'session' } },
+    children: { 'conversation.session.header.utilities': { kind: 'list', scope: 'session' } },
   } as never, () => null)
 
   if (options.registrationFailure === true) {
@@ -49,7 +49,7 @@ async function bench(options: { registrationFailure?: boolean } = {}) {
   if (options.registrationFailure !== true) await activation
   else await fiber.await()
 
-  const entry = () => ctx.slots.entries('conversation.session.header.actions')
+  const entry = () => ctx.slots.entries('conversation.session.header.utilities')
     .find(candidate => candidate.component === CreditPill)
   return { ctx, fiber, activation, remote, entry, collapse, list, watch, refresh }
 }
@@ -59,7 +59,7 @@ describe('ui-api-credit-widget apply', () => {
     expect(inject).toEqual(['remote', 'slots', 'locale'])
   })
 
-  it('mounts the credit Remote, registers dictionaries, and registers the session header action', async () => {
+  it('mounts the credit Remote, registers dictionaries, and registers the session header utility', async () => {
     const b = await bench()
     expect(b.remote.mount).toHaveBeenCalledOnce()
     expect(b.remote.mount.mock.calls[0]?.[0]).toMatchObject({
@@ -90,14 +90,14 @@ describe('ui-api-credit-widget apply', () => {
     expect(b.remote.disposeMount).toHaveBeenCalledOnce()
   })
 
-  it('re-registers after the session header action slot collapses and is declared again', async () => {
+  it('re-registers after the session header utility slot collapses and is declared again', async () => {
     const b = await bench()
     expect(b.entry()).toBeDefined()
     b.collapse()
     expect(b.entry()).toBeUndefined()
     b.ctx.slots.register({
       name: 'root',
-      children: { 'conversation.session.header.actions': { kind: 'list', scope: 'session' } },
+      children: { 'conversation.session.header.utilities': { kind: 'list', scope: 'session' } },
     } as never, () => null)
     await Promise.resolve()
     expect(b.entry()).toBeDefined()

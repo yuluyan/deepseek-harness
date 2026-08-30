@@ -26,7 +26,7 @@ Status: implemented
 
 ### 浏览器 chip
 
-浏览器入口挂载生成的 `credit` Remote contribution，注册 `credit` locale 命名空间（zh/en）并把 `locale: 'credit'` 传给 `slots.register`，随后注册进 `conversation.session.header.actions`（`id: 'api-credit-widget'`、`order: 10`、`data-credit-widget="pill"`）。chip 显示一个状态/构成环（granted 绿、topped-up 蓝）加主余额；点击打开一个夹紧在视口内的 portal 弹层，含各币种明细、相对拉取时间与充值链接（`https://platform.deepseek.com/top_up`）。所有文案都经 `t` 席位。
+浏览器入口挂载生成的 `credit` Remote contribution，注册 `credit` locale 命名空间（zh/en）并把 `locale: 'credit'` 传给 `slots.register`，随后注册进 `conversation.session.header.utilities`（`id: 'api-credit-widget'`、`order: 10`、`data-credit-widget="pill"`）。chip 显示一个状态/构成环（granted 绿、topped-up 蓝）加主余额；点击打开一个夹紧在视口内的 portal 弹层，含各币种明细、相对拉取时间与充值链接（`https://platform.deepseek.com/top_up`）。所有文案都经 `t` 席位。
 
 ## 考虑过的替代方案
 

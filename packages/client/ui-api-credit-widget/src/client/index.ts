@@ -2,13 +2,13 @@
  * Browser entry for the credit widget. Mounts the generated `credit` Remote
  * contribution onto `ctx.remote`, registers the `credit` locale namespace,
  * then registers the chip into the session header's
- * `conversation.session.header.actions` slot. Mirrors `client-ui-agent-team`'s
+ * `conversation.session.header.utilities` slot. Mirrors `client-ui-agent-team`'s
  * mount shape.
  * @module @deepseek-ai/dsh-client-ui-api-credit-widget/client
  */
 
 import type { Context as ClientContext } from '@deepseek-ai/cordis'
-// Type-only: bring the conversation SlotMap merge (declares `conversation.session.header.actions`).
+// Type-only: bring the conversation SlotMap merge (declares `conversation.session.header.utilities`).
 import type {} from '@deepseek-ai/dsh-client-ui-conversation/client'
 // Type-only: bring the locale plugin's Context merge (ctx.locale).
 import type {} from '@deepseek-ai/dsh-client-locale/client'
@@ -49,8 +49,8 @@ function registerUi(ctx: ClientContext): void {
     },
   }
 
-  ctx.slots.inject('conversation.session.header.actions', () => ctx.slots.register({
-    name: 'conversation.session.header.actions',
+  ctx.slots.inject('conversation.session.header.utilities', () => ctx.slots.register({
+    name: 'conversation.session.header.utilities',
     id: 'api-credit-widget',
     order: 10,
     locale: NS,

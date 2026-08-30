@@ -39,7 +39,7 @@ chip 显示主余额（第一个、美元优先的币种），环表示 granted 
 <details>
 <summary>实现细节——点击展开</summary>
 
-浏览器入口挂载生成的 `credit` Remote contribution，注册 `credit` locale 命名空间，然后注册一个 `conversation.session.header.actions` slot。组件通过注入的回调消费实时 `credit/watch` 流并维护自身视图状态，不持有持久状态。Dispose 插件 fiber 会移除 slot、词典与 Remote 挂载。
+浏览器入口挂载生成的 `credit` Remote contribution，注册 `credit` locale 命名空间，然后注册一个 `conversation.session.header.utilities` slot。组件通过注入的回调消费实时 `credit/watch` 流并维护自身视图状态，不持有持久状态。Dispose 插件 fiber 会移除 slot、词典与 Remote 挂载。
 
 | 文件 | 职责 |
 |---|---|
@@ -56,7 +56,7 @@ chip 显示主余额（第一个、美元优先的币种），环表示 granted 
 ## 进一步探索
 
 - [API 余额 widget](../../llm/api-credit-widget/README.zh.md)——本 widget 渲染的 Host Remote 服务。
-- [Conversation](../../client/ui-conversation/README.zh.md)——声明 `conversation.session.header.actions` slot 的外壳。
+- [Conversation](../../client/ui-conversation/README.zh.md)——声明 `conversation.session.header.utilities` slot 的外壳。
 - [UI primitives](../../client/ui-primitives/README.zh.md)——widget 组合使用的 `StateDot`、`Button` 与 `relativeTime`。
 
 -----

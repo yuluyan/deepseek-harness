@@ -26,7 +26,7 @@ Split the feature like the agent-team precedent: a host Remote service (`@deepse
 
 ### Browser chip
 
-The browser entry mounts the generated `credit` Remote contribution, registers a `credit` locale namespace (zh/en) and passes `locale: 'credit'` to `slots.register`, then registers `conversation.session.header.actions` (`id: 'api-credit-widget'`, `order: 10`, `data-credit-widget="pill"`). The chip shows a status/composition ring (granted green, topped-up blue) plus the primary balance; clicking opens a viewport-clamped portaled popover with the per-currency breakdown, the relative fetch time, and the top-up link (`https://platform.deepseek.com/top_up`). All copy rides the `t` seat.
+The browser entry mounts the generated `credit` Remote contribution, registers a `credit` locale namespace (zh/en) and passes `locale: 'credit'` to `slots.register`, then registers `conversation.session.header.utilities` (`id: 'api-credit-widget'`, `order: 10`, `data-credit-widget="pill"`). The chip shows a status/composition ring (granted green, topped-up blue) plus the primary balance; clicking opens a viewport-clamped portaled popover with the per-currency breakdown, the relative fetch time, and the top-up link (`https://platform.deepseek.com/top_up`). All copy rides the `t` seat.
 
 ## Alternatives considered
 

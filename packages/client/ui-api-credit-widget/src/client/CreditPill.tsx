@@ -1,6 +1,6 @@
 /**
  * Session-header credit chip + popover. Registered into
- * `conversation.session.header.actions`; the chip shows a status/composition
+ * `conversation.session.header.utilities`; the chip shows a status/composition
  * ring and the primary balance, and a click opens a viewport-clamped,
  * portaled card with the full breakdown.
  *

@@ -39,7 +39,7 @@ The chip shows the primary balance (the first, USD-first currency) with a ring e
 <details>
 <summary>Implementation internals — click to expand</summary>
 
-The browser entry mounts the generated `credit` Remote contribution, registers the `credit` locale namespace, then registers one `conversation.session.header.actions` slot. The component consumes the live `credit/watch` stream through injected callbacks and keeps its own view state; it holds no durable state. Disposing the plugin fiber removes the slot, the dictionaries, and the Remote mount.
+The browser entry mounts the generated `credit` Remote contribution, registers the `credit` locale namespace, then registers one `conversation.session.header.utilities` slot. The component consumes the live `credit/watch` stream through injected callbacks and keeps its own view state; it holds no durable state. Disposing the plugin fiber removes the slot, the dictionaries, and the Remote mount.
 
 | File | Role |
 |---|---|
@@ -56,7 +56,7 @@ The browser entry mounts the generated `credit` Remote contribution, registers t
 ## Further Exploration
 
 - [API credit widget](../../llm/api-credit-widget/README.md) — the Host Remote service this widget renders.
-- [Conversation](../../client/ui-conversation/README.md) — the shell that declares the `conversation.session.header.actions` slot.
+- [Conversation](../../client/ui-conversation/README.md) — the shell that declares the `conversation.session.header.utilities` slot.
 - [UI primitives](../../client/ui-primitives/README.md) — the `StateDot`, `Button`, and `relativeTime` pieces the widget composes.
 
 -----
