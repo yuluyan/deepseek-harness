@@ -191,7 +191,7 @@
     - id: ui-sidebar
       name: '@deepseek-ai/dsh-client-ui-sidebar'
 
-    # API credit pill in the sidebar footer.
+    # API credit chip in the session header.
     - id: ui-api-credit-widget
       name: '@deepseek-ai/dsh-client-ui-api-credit-widget'
 

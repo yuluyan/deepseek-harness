@@ -20,11 +20,6 @@
   background: var(--dsw-alias-interactive-bg-hover);
 }
 
-.pill[data-wide='false'] {
-  padding: 0 4px;
-  border-color: transparent;
-}
-
 .pillRing {
   display: inline-flex;
   flex: none;

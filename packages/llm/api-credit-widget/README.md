@@ -1,5 +1,5 @@
 ---
-description: "Poll the DeepSeek API credit balance and expose it to the Web sidebar as a generated Remote service."
+description: "Poll the DeepSeek API credit balance and expose it to the Web GUI as a generated Remote service."
 kind: "package-reference"
 ---
 
@@ -9,7 +9,7 @@ English | [中文](README.zh.md)
 
 ## Summary
 
-`dsh-api-credit-widget` polls DeepSeek's `GET /user/balance` endpoint and exposes each provider's latest credit snapshot to the browser through a generated `credit` Remote namespace — unary `list` and `refresh` plus a live `watch` stream. It resolves the same `DEEPSEEK_API_KEY` credential as `dsh-llm-deepseek`, retries the initial fetch with a short backoff so a cold start does not stick on an error, keeps the last good snapshot when a re-fetch fails, and orders currencies deterministically with USD first. It registers nothing model-facing; the sidebar widget renders its output.
+`dsh-api-credit-widget` polls DeepSeek's `GET /user/balance` endpoint and exposes each provider's latest credit snapshot to the browser through a generated `credit` Remote namespace — unary `list` and `refresh` plus a live `watch` stream. It resolves the same `DEEPSEEK_API_KEY` credential as `dsh-llm-deepseek`, retries the initial fetch with a short backoff so a cold start does not stick on an error, keeps the last good snapshot when a re-fetch fails, and orders currencies deterministically with USD first. It registers nothing model-facing; the session-header widget renders its output.
 
 ## Table of Contents
 
@@ -60,7 +60,7 @@ The controller is a `TypertRemoteService` that owns the `credit` namespace. It b
 <a id="further-exploration"></a>
 ## Further Exploration
 
-- [Browser credit widget](../../client/ui-api-credit-widget/README.md) — the sidebar pill and popover that render this service.
+- [Browser credit widget](../../client/ui-api-credit-widget/README.md) — the session-header chip and popover that render this service.
 - [DeepSeek adapter](../../llm/llm-deepseek/README.md) — the provider whose credential and base URL this package reuses.
 
 -----
@@ -72,7 +72,7 @@ None, as the balance poller and its Remote surface register no model-facing inpu
 
 #### KV Cache effect
 
-No direct effect; credit balances are rendered only in the browser footer and never enter model context.
+No direct effect; credit balances are rendered only in the browser session header and never enter model context.
 
 ## Known Limitations and Deferred Work
 

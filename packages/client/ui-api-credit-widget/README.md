@@ -1,5 +1,5 @@
 ---
-description: "Render the DeepSeek API credit balance in the Web sidebar footer as a pill and popover."
+description: "Render the DeepSeek API credit balance in the Web session header as an at-a-glance chip and popover."
 kind: "package-reference"
 ---
 
@@ -9,7 +9,7 @@ English | [中文](README.zh.md)
 
 ## Summary
 
-`dsh-client-ui-api-credit-widget` renders the DeepSeek API credit balance in the Web sidebar footer. A pill shows a status/composition ring plus the primary balance; clicking it opens a viewport-clamped, portaled popover with the full per-currency breakdown, a granted/topped-up composition ring, the last-updated time, and a top-up link. It reads the generated `credit` Remote contribution and registers nothing model-facing.
+`dsh-client-ui-api-credit-widget` renders the DeepSeek API credit balance in the Web session header. A chip shows a status/composition ring plus the primary balance; clicking it opens a viewport-clamped, portaled popover with the full per-currency breakdown, a granted/topped-up composition ring, the last-updated time, and a top-up link. It reads the generated `credit` Remote contribution and registers nothing model-facing.
 
 ## Table of Contents
 
@@ -25,11 +25,11 @@ English | [中文](README.zh.md)
 <a id="use-this-package"></a>
 ## Use this package
 
-Mount the package in the Client composition of a Web profile alongside its Host service, `@deepseek-ai/dsh-api-credit-widget`. It has no user configuration fields; the pill appears in the sidebar footer once the `credit` Remote namespace is available.
+Mount the package in the Client composition of a Web profile alongside its Host service, `@deepseek-ai/dsh-api-credit-widget`. It has no user configuration fields; the chip appears in the session header once the `credit` Remote namespace is available.
 
 ### Read the balance
 
-The pill shows the primary balance (the first, USD-first currency) with a ring encoding granted versus topped-up credit. Open the popover for every currency, the full breakdown, a manual refresh, and the top-up link. Without a key the pill degrades to an error state with the resolved credential's failure message.
+The chip shows the primary balance (the first, USD-first currency) with a ring encoding granted versus topped-up credit. Open the popover for every currency, the full breakdown, a manual refresh, and the top-up link. Without a key the chip degrades to an error state with the resolved credential's failure message.
 
 -----
 
@@ -39,7 +39,7 @@ The pill shows the primary balance (the first, USD-first currency) with a ring e
 <details>
 <summary>Implementation internals — click to expand</summary>
 
-The browser entry mounts the generated `credit` Remote contribution, registers the `credit` locale namespace, then registers one `sidebar.footer.action` slot. The component consumes the live `credit/watch` stream through injected callbacks and keeps its own view state; it holds no durable state. Disposing the plugin fiber removes the slot, the dictionaries, and the Remote mount.
+The browser entry mounts the generated `credit` Remote contribution, registers the `credit` locale namespace, then registers one `conversation.session.header.actions` slot. The component consumes the live `credit/watch` stream through injected callbacks and keeps its own view state; it holds no durable state. Disposing the plugin fiber removes the slot, the dictionaries, and the Remote mount.
 
 | File | Role |
 |---|---|
@@ -56,7 +56,7 @@ The browser entry mounts the generated `credit` Remote contribution, registers t
 ## Further Exploration
 
 - [API credit widget](../../llm/api-credit-widget/README.md) — the Host Remote service this widget renders.
-- [Sidebar](../../client/ui-sidebar/README.md) — the shell that declares the `sidebar.footer.action` slot.
+- [Conversation](../../client/ui-conversation/README.md) — the shell that declares the `conversation.session.header.actions` slot.
 - [UI primitives](../../client/ui-primitives/README.md) — the `StateDot`, `Button`, and `relativeTime` pieces the widget composes.
 
 -----
@@ -68,7 +68,7 @@ None, as this browser projection renders the credit Remote without changing mode
 
 #### KV Cache effect
 
-No direct effect; credit balances stay in the browser footer and never enter the Session log or model history.
+No direct effect; credit balances stay in the browser session header and never enter the Session log or model history.
 
 ## Known Limitations and Deferred Work
 

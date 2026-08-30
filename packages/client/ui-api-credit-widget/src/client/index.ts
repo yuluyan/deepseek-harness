@@ -1,14 +1,15 @@
 /**
  * Browser entry for the credit widget. Mounts the generated `credit` Remote
  * contribution onto `ctx.remote`, registers the `credit` locale namespace,
- * then registers the pill into the sidebar's `sidebar.footer.action` slot.
- * Mirrors `client-ui-agent-team`'s mount shape.
+ * then registers the chip into the session header's
+ * `conversation.session.header.actions` slot. Mirrors `client-ui-agent-team`'s
+ * mount shape.
  * @module @deepseek-ai/dsh-client-ui-api-credit-widget/client
  */
 
 import type { Context as ClientContext } from '@deepseek-ai/cordis'
-// Type-only: bring the sidebar SlotMap merge (declares `sidebar.footer.action`).
-import type {} from '@deepseek-ai/dsh-client-ui-sidebar/client'
+// Type-only: bring the conversation SlotMap merge (declares `conversation.session.header.actions`).
+import type {} from '@deepseek-ai/dsh-client-ui-conversation/client'
 // Type-only: bring the locale plugin's Context merge (ctx.locale).
 import type {} from '@deepseek-ai/dsh-client-locale/client'
 // Type-only: bring the gateway's `ctx.remote` Context augmentation into scope.
@@ -24,7 +25,7 @@ export type { CreditWidgetKey } from './locales.ts'
 
 declare module '@deepseek-ai/dsh-client-ui-slots' {
   interface LocaleNamespaceMap {
-    /** Sidebar credit widget copy. */
+    /** Session-header credit widget copy. */
     credit: CreditWidgetKey
   }
 }
@@ -48,8 +49,8 @@ function registerUi(ctx: ClientContext): void {
     },
   }
 
-  ctx.slots.inject('sidebar.footer.action', () => ctx.slots.register({
-    name: 'sidebar.footer.action',
+  ctx.slots.inject('conversation.session.header.actions', () => ctx.slots.register({
+    name: 'conversation.session.header.actions',
     id: 'api-credit-widget',
     order: 10,
     locale: NS,

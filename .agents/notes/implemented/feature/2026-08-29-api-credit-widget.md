@@ -1,4 +1,4 @@
-# Agent Note: API credit widget — CreditProvider seam + credit Remote + sidebar footer pill
+# Agent Note: API credit widget — CreditProvider seam + credit Remote + session header chip
 
 Status: implemented
 
@@ -10,7 +10,7 @@ A deployment wants its DeepSeek API credit/balance visible in the web GUI withou
 
 ## Decision
 
-Split the feature like the agent-team precedent: a host Remote service (`@deepseek-ai/dsh-api-credit-widget`) that polls and caches, and a browser plugin (`@deepseek-ai/dsh-client-ui-api-credit-widget`) that renders a sidebar-footer pill.
+Split the feature like the agent-team precedent: a host Remote service (`@deepseek-ai/dsh-api-credit-widget`) that polls and caches, and a browser plugin (`@deepseek-ai/dsh-client-ui-api-credit-widget`) that renders a session-header chip.
 
 ### CreditProvider capability seam
 
@@ -24,9 +24,9 @@ Split the feature like the agent-team precedent: a host Remote service (`@deepse
 
 `refresh()` writes a snapshot only when it is `ok` or the vendor has nothing cached, so a transient re-fetch failure never blanks a working balance with an error. The constructor's initial poll retries up to four times with a 1500ms-per-attempt backoff so a cold start does not park the widget on a transient error. `deepSeekProvider` normalizes currencies with a fixed USD-first priority list, then alphabetically for unknown codes, so the primary figure never flips between calls. Amounts stay strings end-to-end (`total`/`granted`/`toppedUp`) — float-ing money is a bug.
 
-### Browser pill
+### Browser chip
 
-The browser entry mounts the generated `credit` Remote contribution, registers a `credit` locale namespace (zh/en) and passes `locale: 'credit'` to `slots.register`, then registers `sidebar.footer.action` (`id: 'api-credit-widget'`, `order: 10`, `data-credit-widget="pill"`). The pill shows a status/composition ring (granted green, topped-up blue) plus the primary balance; clicking opens a viewport-clamped portaled popover with the per-currency breakdown, the relative fetch time, and the top-up link (`https://platform.deepseek.com/top_up`). All copy rides the `t` seat.
+The browser entry mounts the generated `credit` Remote contribution, registers a `credit` locale namespace (zh/en) and passes `locale: 'credit'` to `slots.register`, then registers `conversation.session.header.actions` (`id: 'api-credit-widget'`, `order: 10`, `data-credit-widget="pill"`). The chip shows a status/composition ring (granted green, topped-up blue) plus the primary balance; clicking opens a viewport-clamped portaled popover with the per-currency breakdown, the relative fetch time, and the top-up link (`https://platform.deepseek.com/top_up`). All copy rides the `t` seat.
 
 ## Alternatives considered
 
