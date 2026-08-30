@@ -1,0 +1,214 @@
+/* Credit pill + popover, styled with DSH `--dsw-*` tokens. */
+
+.pill {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 8px;
+  border: 1px solid var(--dsw-alias-border-l1);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--dsw-alias-label-primary);
+  cursor: pointer;
+  font: inherit;
+  transition: background 120ms ease;
+}
+
+.pill:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+
+.pill[data-wide='false'] {
+  padding: 0 4px;
+  border-color: transparent;
+}
+
+.pillRing {
+  display: inline-flex;
+  flex: none;
+}
+
+.pillLabel {
+  display: inline-flex;
+  flex-direction: column;
+  line-height: 1.15;
+  text-align: left;
+}
+
+.pillVendor {
+  font-size: 10px;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.pillAmount {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ── popover card (mirrors the Menu surface) ───────────────────────────── */
+
+.popover {
+  position: fixed;
+  z-index: 1100;
+  width: 280px;
+  border: 1px solid var(--dsw-alias-border-inverted);
+  border-radius: 12px;
+  background: var(--dsw-alias-bg-overlay);
+  box-shadow: var(--dsw-shadow-lv3);
+  color: var(--dsw-alias-label-primary);
+  overflow: hidden;
+}
+
+.popHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--dsw-alias-border-l1);
+}
+
+.popTitle {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.popStatus {
+  font-size: 11px;
+  color: var(--dsw-alias-label-tertiary);
+  text-transform: capitalize;
+}
+
+.popStatus[data-status='ok'] { color: var(--dsw-alias-state-success-primary); }
+.popStatus[data-status='error'] { color: var(--dsw-alias-state-error-primary); }
+.popStatus[data-status='loading'] { color: var(--dsw-static-deepseek-450); }
+
+.popBody {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+}
+
+.popGauge {
+  position: relative;
+  flex: none;
+  width: 72px;
+  height: 72px;
+}
+
+.popGaugeCenter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+}
+
+.popGaugeAmount {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.popGaugeCaption {
+  font-size: 9px;
+  color: var(--dsw-alias-label-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.popRows {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 8px;
+  padding: 5px 0;
+  border-bottom: 1px solid var(--dsw-alias-border-l1);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.rowCur {
+  font-size: 11px;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.rowTotal {
+  font-size: 12px;
+  font-weight: 600;
+  text-align: right;
+}
+
+.rowMeta {
+  grid-column: 1 / -1;
+  font-size: 10px;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.empty {
+  font-size: 12px;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.errorText {
+  font-size: 11px;
+  color: var(--dsw-alias-state-error-primary);
+}
+
+.popFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 8px 12px;
+  border-top: 1px solid var(--dsw-alias-border-l1);
+  font-size: 10px;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.topUpLink {
+  color: var(--dsw-static-deepseek-450);
+  text-decoration: none;
+}
+
+.topUpLink:hover {
+  text-decoration: underline;
+}
+
+/* ── ring ─────────────────────────────────────────────────────────────── */
+
+.ring {
+  display: block;
+}
+
+.ringTrack {
+  stroke: var(--dsw-alias-border-l2);
+}
+
+.ringGranted {
+  stroke: var(--dsw-alias-state-success-primary);
+}
+
+.ringTopped {
+  stroke: var(--dsw-static-deepseek-450);
+}
+
+.ringStatus[data-status='ok'] { stroke: var(--dsw-alias-state-success-primary); }
+.ringStatus[data-status='error'] { stroke: var(--dsw-alias-state-error-primary); }
+.ringStatus[data-status='loading'] { stroke: var(--dsw-static-deepseek-450); }
