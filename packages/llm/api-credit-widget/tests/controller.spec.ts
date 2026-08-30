@@ -129,7 +129,7 @@ describe('CreditController', () => {
     vi.stubGlobal('fetch', okFetch())
     const ctx = new Context()
     ctx.provide('credentials', {
-      resolve: async (ref) => {
+      resolve: async (ref: string) => {
         resolved.push(String(ref))
         return { value: 'k', source: 'memory' }
       },

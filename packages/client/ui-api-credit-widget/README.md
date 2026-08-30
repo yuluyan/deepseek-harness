@@ -18,6 +18,7 @@ English | [中文](README.zh.md)
 - [Further Exploration](#further-exploration)
 - [Model Experience](#model-experience)
 - [Known Limitations and Deferred Work](#known-limitations-and-deferred-work)
+- [Dev Note](#dev-note)
 
 -----
 
@@ -74,3 +75,13 @@ No direct effect; credit balances stay in the browser footer and never enter the
 - **DeepSeek only** — the widget selects the `deepseek` vendor snapshot; other vendors need Host-side providers first.
 - **Error-first presentation** — before the first successful fetch the pill shows a loading state, and a failed fetch shows the resolved error; there is no offline cache of a prior balance across sessions.
 - **No low-balance warning** — the pill renders the balance but raises no threshold-based warning.
+
+<a id="dev-note"></a>
+### Dev Note
+
+<details>
+<summary>Working context for maintainers — click to expand</summary>
+
+None.
+
+</details>

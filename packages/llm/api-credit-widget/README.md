@@ -18,6 +18,7 @@ English | [中文](README.zh.md)
 - [Further Exploration](#further-exploration)
 - [Model Experience](#model-experience)
 - [Known Limitations and Deferred Work](#known-limitations-and-deferred-work)
+- [Dev Note](#dev-note)
 
 -----
 
@@ -79,3 +80,13 @@ No direct effect; credit balances are rendered only in the browser footer and ne
 - **Polling, not push** — snapshots update on the fixed interval and an explicit refresh; there is no server-push balance event.
 - **Keep-last-good staleness** — a failed re-fetch leaves the last good snapshot visible, so the widget can show a stale balance until the next successful fetch.
 - **Single credential** — the DeepSeek provider resolves one `apiKeyEnv` reference; it does not model per-vendor credentials or usage-history paging.
+
+<a id="dev-note"></a>
+### Dev Note
+
+<details>
+<summary>Working context for maintainers — click to expand</summary>
+
+None.
+
+</details>
