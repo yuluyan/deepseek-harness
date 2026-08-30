@@ -5,6 +5,7 @@
  *
  * Rendered from `remote.credit`, styled with `--dsw-*` tokens and DSH
  * primitives (StateDot, Button, relativeTime) to match the product's language.
+ * All product copy arrives through the `t` seat (`credit` namespace).
  * @module @deepseek-ai/dsh-client-ui-api-credit-widget/client
  */
 
@@ -12,22 +13,26 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { createPortal } from 'react-dom'
 import { Button, StateDot, relativeTime } from '@deepseek-ai/dsh-client-ui-primitives'
+import type { PropsLocale } from '@deepseek-ai/dsh-client-ui-slots'
 import type { CreditBalance, CreditSnapshot } from '@deepseek-ai/dsh-api-credit-widget/types'
 import css from './CreditPill.module.css'
 
 export interface CreditWidgetInjected {
   /** Latest cached snapshots from `remote.credit.list()`. */
-  listSnapshots(): Promise<CreditSnapshot[]>
+  listSnapshots(this: void): Promise<CreditSnapshot[]>
   /** Live snapshot stream from `remote.credit.watch()`. */
-  watchSnapshots(signal: AbortSignal): AsyncIterable<CreditSnapshot[]>
+  watchSnapshots(this: void, signal: AbortSignal): AsyncIterable<CreditSnapshot[]>
   /** Force a refresh from `remote.credit.refresh()`. */
-  refresh(): Promise<CreditSnapshot[]>
+  refresh(this: void): Promise<CreditSnapshot[]>
 }
 
-interface CreditPillProps extends CreditWidgetInjected {
+interface CreditPillProps extends CreditWidgetInjected, PropsLocale<'credit'> {
   /** Whether the sidebar renders wide content (false = 56px rail). */
   wide: boolean
 }
+
+/** The namespace-bound translate for this widget. */
+type CreditT = PropsLocale<'credit'>['t']
 
 type Status = 'loading' | 'ok' | 'error'
 
@@ -36,6 +41,13 @@ const DOT_STATE: Record<Status, 'done' | 'error' | 'ongoing'> = {
   ok: 'done',
   error: 'error',
   loading: 'ongoing',
+}
+
+/** Dictionary key for each status's popover caption. */
+const STATUS_LABEL_KEY: Record<Status, 'status.ok' | 'status.error' | 'status.loading'> = {
+  ok: 'status.ok',
+  error: 'status.error',
+  loading: 'status.loading',
 }
 
 function amountOf(value: string | undefined): number {
@@ -57,14 +69,14 @@ function primaryLabel(balance: CreditBalance | undefined): string {
   return balance === undefined ? '—' : `${balance.currency} ${balance.total}`
 }
 
-function relativeLabel(iso: string): string {
+function relativeLabel(iso: string, t: CreditT): string {
   const { unit, n } = relativeTime(Date.parse(iso), Date.now())
-  if (unit === 'now') return 'just now'
-  if (unit === 'minutes') return `${n}min ago`
-  if (unit === 'hours') return `${n}h ago`
-  if (unit === 'days') return `${n}d ago`
-  if (unit === 'months') return `${n}mo ago`
-  return `${n}y ago`
+  if (unit === 'now') return t('time.now')
+  if (unit === 'minutes') return t('time.minutes', { n })
+  if (unit === 'hours') return t('time.hours', { n })
+  if (unit === 'days') return t('time.days', { n })
+  if (unit === 'months') return t('time.months', { n })
+  return t('time.years', { n })
 }
 
 /** Composition ring: granted (green) + topped-up (blue); a single status ring when no breakdown. */
@@ -123,7 +135,7 @@ function Ring({ balance, size, status }: { balance: CreditBalance | undefined; s
   )
 }
 
-function BalanceRows({ snapshot }: { snapshot: CreditSnapshot }) {
+function BalanceRows({ snapshot, t }: { snapshot: CreditSnapshot; t: CreditT }) {
   return (
     <div className={css.rows}>
       {snapshot.balances.map(balance => (
@@ -131,9 +143,9 @@ function BalanceRows({ snapshot }: { snapshot: CreditSnapshot }) {
           <span className={css.rowCur}>{balance.currency}</span>
           <span className={css.rowTotal}>{balance.total}</span>
           <span className={css.rowMeta}>
-            {balance.granted !== undefined ? `available ${balance.granted}` : ''}
+            {balance.granted !== undefined ? t('balance.granted', { amount: balance.granted }) : ''}
             {balance.granted !== undefined && balance.toppedUp !== undefined ? ' · ' : ''}
-            {balance.toppedUp !== undefined ? `topped up ${balance.toppedUp}` : ''}
+            {balance.toppedUp !== undefined ? t('balance.toppedUp', { amount: balance.toppedUp }) : ''}
           </span>
         </div>
       ))}
@@ -141,7 +153,7 @@ function BalanceRows({ snapshot }: { snapshot: CreditSnapshot }) {
   )
 }
 
-export function CreditPill({ wide, listSnapshots, watchSnapshots, refresh }: CreditPillProps) {
+export function CreditPill({ wide, t, listSnapshots, watchSnapshots, refresh }: CreditPillProps) {
   const [snapshots, setSnapshots] = useState<CreditSnapshot[]>([])
   const [open, setOpen] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
@@ -168,7 +180,7 @@ export function CreditPill({ wide, listSnapshots, watchSnapshots, refresh }: Cre
       } catch {
         // Stream ended (transport drop): fall back to a single current read.
         if (!disposed) {
-          void listSnapshots().then(setSnapshots).catch(() => setSnapshots([]))
+          void listSnapshots().then(setSnapshots).catch(() =>{  setSnapshots([]) })
         }
       }
     }
@@ -181,7 +193,7 @@ export function CreditPill({ wide, listSnapshots, watchSnapshots, refresh }: Cre
 
   const doRefresh = () => {
     setRefreshing(true)
-    void refresh().then(setSnapshots).finally(() => setRefreshing(false))
+    void refresh().then(setSnapshots).finally(() =>{  setRefreshing(false) })
   }
 
   // Portaled card placement: prefer above the pill, clamp into the viewport.
@@ -193,6 +205,7 @@ export function CreditPill({ wide, listSnapshots, watchSnapshots, refresh }: Cre
     const place = () => {
       const anchor = anchorRef.current
       const panel = panelRef.current
+      /* v8 ignore next -- both refs are attached before the open state renders the portal */
       if (anchor === null || panel === null) return
       const rect = anchor.getBoundingClientRect()
       const width = panel.offsetWidth
@@ -225,7 +238,7 @@ export function CreditPill({ wide, listSnapshots, watchSnapshots, refresh }: Cre
       }
     }
     document.addEventListener('pointerdown', onPointerDown)
-    return () => document.removeEventListener('pointerdown', onPointerDown)
+    return () =>{  document.removeEventListener('pointerdown', onPointerDown) }
   }, [open])
 
   return (
@@ -234,17 +247,18 @@ export function CreditPill({ wide, listSnapshots, watchSnapshots, refresh }: Cre
         ref={anchorRef}
         type="button"
         className={css.pill}
+        data-credit-widget="pill"
         data-wide={wide}
         aria-expanded={open}
-        onClick={() => setOpen(value => !value)}
-        title={snapshot === undefined ? 'Credit — loading' : `${snapshot.label} credit`}
+        onClick={() =>{  setOpen(value => !value) }}
+        title={snapshot === undefined ? t('pill.loading') : t('pill.title', { label: snapshot.label })}
       >
         <span className={css.pillRing}>
           <Ring balance={primary} size={wide ? 16 : 18} status={status} />
         </span>
         {wide && (
           <span className={css.pillLabel}>
-            <span className={css.pillVendor}>{snapshot?.label ?? 'Credit'}</span>
+            <span className={css.pillVendor}>{snapshot?.label ?? t('pill.fallback')}</span>
             <span className={css.pillAmount}>{primaryText}</span>
           </span>
         )}
@@ -256,13 +270,13 @@ export function CreditPill({ wide, listSnapshots, watchSnapshots, refresh }: Cre
           className={css.popover}
           style={position ?? undefined}
           role="dialog"
-          aria-label={`${snapshot?.label ?? 'Credit'} balance`}
+          aria-label={t('dialog.label', { label: snapshot?.label ?? t('pill.fallback') })}
         >
           <header className={css.popHeader}>
             <StateDot state={DOT_STATE[status]} size={10} />
-            <span className={css.popTitle}>{snapshot?.label ?? 'Credit'}</span>
-            <span className={css.popStatus} data-status={status}>{status}</span>
-            <Button variant="ghost" size="sm" aria-label="Refresh" onClick={doRefresh} disabled={refreshing}>
+            <span className={css.popTitle}>{snapshot?.label ?? t('pill.fallback')}</span>
+            <span className={css.popStatus} data-status={status}>{t(STATUS_LABEL_KEY[status])}</span>
+            <Button variant="ghost" size="sm" aria-label={t('action.refresh')} onClick={doRefresh} disabled={refreshing}>
               {refreshing ? '…' : '↻'}
             </Button>
           </header>
@@ -272,23 +286,23 @@ export function CreditPill({ wide, listSnapshots, watchSnapshots, refresh }: Cre
               <Ring balance={primary} size={72} status={status} />
               <div className={css.popGaugeCenter}>
                 <span className={css.popGaugeAmount}>{primaryText}</span>
-                <span className={css.popGaugeCaption}>available</span>
+                <span className={css.popGaugeCaption}>{t('gauge.available')}</span>
               </div>
             </div>
             <div className={css.popRows}>
               {snapshot === undefined
-                ? <span className={css.empty}>Loading…</span>
+                ? <span className={css.empty}>{t('body.loading')}</span>
                 : snapshot.ok
-                  ? <BalanceRows snapshot={snapshot} />
+                  ? <BalanceRows snapshot={snapshot} t={t} />
                   : <span className={css.errorText}>{snapshot.error}</span>}
             </div>
           </div>
 
           <footer className={css.popFooter}>
-            <span>{snapshot === undefined ? 'No data yet' : `Updated ${relativeLabel(snapshot.fetchedAt)}`}</span>
+            <span>{snapshot === undefined ? t('footer.noData') : t('footer.updated', { time: relativeLabel(snapshot.fetchedAt, t) })}</span>
             {snapshot?.topUpUrl !== undefined && (
               <a className={css.topUpLink} href={snapshot.topUpUrl} target="_blank" rel="noreferrer">
-                Top up ↗
+                {t('footer.topUp')}
               </a>
             )}
           </footer>

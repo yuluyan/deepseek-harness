@@ -24,6 +24,9 @@
       "path": "../ui-renderer"
     },
     {
+      "path": "../locale"
+    },
+    {
       "path": "../../llm/api-credit-widget"
     },
     {

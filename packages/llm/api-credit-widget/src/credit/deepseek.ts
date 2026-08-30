@@ -7,8 +7,11 @@
 import type { CreditProvider } from './provider.ts'
 import type { CreditBalance, CreditSnapshot } from './types.ts'
 
+/** Stable vendor id of the DeepSeek provider. */
 export const DEEPSEEK_VENDOR = 'deepseek'
+/** Credential reference resolved per fetch; shares DSH's key by default. */
 export const DEFAULT_API_KEY_ENV = 'DEEPSEEK_API_KEY'
+/** DeepSeek API base URL. */
 export const DEFAULT_BASE_URL = 'https://api.deepseek.com'
 
 /** Shape returned by the DeepSeek balance endpoint (amounts are strings). */
@@ -22,6 +25,7 @@ interface DeepSeekBalanceResponse {
   }>
 }
 
+/** Construction options for {@link deepSeekProvider}. */
 export interface DeepSeekProviderOptions {
   /** Credential reference to resolve per fetch; defaults to `DEEPSEEK_API_KEY`. */
   apiKeyEnv?: string
@@ -57,7 +61,11 @@ const failed = (error: string): CreditSnapshot => ({
   topUpUrl: DEEPSEEK_TOP_UP_URL,
 })
 
-/** Build the DeepSeek {@link CreditProvider}. */
+/**
+ * Build the DeepSeek {@link CreditProvider}.
+ * @param options - optional credential reference and base URL overrides.
+ * @returns a provider that fetches `GET /user/balance`.
+ */
 export function deepSeekProvider(options: DeepSeekProviderOptions = {}): CreditProvider {
   const apiKeyEnv = options.apiKeyEnv ?? DEFAULT_API_KEY_ENV
   const baseURL = options.baseURL ?? DEFAULT_BASE_URL

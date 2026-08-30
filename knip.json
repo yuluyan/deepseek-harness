@@ -415,6 +415,11 @@
         "tests/**/*.ts"
       ]
     },
+    "packages/llm/api-credit-widget": {
+      "ignoreDependencies": [
+        "zod"
+      ]
+    },
     "packages/llm/llm": {
       "ignoreDependencies": [
         "zod"

@@ -17,6 +17,7 @@ import type { CreditSnapshot } from './types.ts'
 const FETCH_TIMEOUT_MS = 15_000
 const DEFAULT_REFRESH_INTERVAL_MS = 5 * 60_000
 
+/** Deployment configuration for {@link CreditController}. */
 export interface Config {
   /** Poll interval in milliseconds. */
   refreshIntervalMs?: number
@@ -26,6 +27,7 @@ export interface Config {
   baseURL?: string
 }
 
+/** Remote owner of the `credit` namespace: polls providers and serves cached snapshots. */
 export class CreditController extends TypertRemoteService {
   static Config: z<Config> = z.object({
     refreshIntervalMs: z.number().step(1).min(15_000).default(DEFAULT_REFRESH_INTERVAL_MS),
@@ -50,7 +52,7 @@ export class CreditController extends TypertRemoteService {
     const timer = setInterval(() => {
       void this.refresh()
     }, interval)
-    ctx.effect(() => () => clearInterval(timer))
+    ctx.effect(() => () =>{  clearInterval(timer) })
     // The first fetch runs at boot, when a credential provider may still be
     // warming up and a cold request can time out — retry a few times with a
     // short backoff so a transient startup failure recovers instead of
@@ -86,7 +88,10 @@ export class CreditController extends TypertRemoteService {
     return launchEnvironmentOf(this.ctx).get(branded)?.value
   }
 
-  /** Every cached snapshot, in provider registration order. */
+  /**
+   * Every cached snapshot, in provider registration order.
+   * @returns snapshots for providers that have fetched at least once.
+   */
   @Remote
   list(): CreditSnapshot[] {
     return this.providers
@@ -97,6 +102,8 @@ export class CreditController extends TypertRemoteService {
   /**
    * Push the current snapshot list immediately, then again after every refresh.
    * The stream carrier owns `signal`; aborting ends the stream and unsubscribes.
+   * @param signal - aborting it ends the stream and unsubscribes.
+   * @returns the snapshot list, first immediately, then after each refresh.
    */
   @Remote({ mode: 'stream' })
   async *watch(signal: AbortSignal): AsyncIterable<CreditSnapshot[]> {
@@ -129,7 +136,10 @@ export class CreditController extends TypertRemoteService {
     for (const subscriber of [...this.subscribers]) subscriber()
   }
 
-  /** Fetch every provider and refresh the cache. */
+  /**
+   * Fetch every provider and refresh the cache.
+   * @returns the fresh snapshot per provider, in provider registration order.
+   */
   @Remote
   async refresh(): Promise<CreditSnapshot[]> {
     const results = await Promise.all(this.providers.map(async (provider) => {
