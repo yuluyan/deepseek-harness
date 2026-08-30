@@ -332,6 +332,10 @@
 
 .footerActions {
   display: flex;
+  /* Additive footer actions differ in width (a compact pill, a full-width
+     badge); stack them so no single action clips its siblings on the row. */
+  flex-direction: column;
+  align-items: flex-start;
 }
 
 .collapsed .footArea {

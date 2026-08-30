@@ -1,5 +1,5 @@
 ---
-description: "轮询 DeepSeek API 余额并通过生成的 Remote 服务暴露给 Web 侧边栏。"
+description: "轮询 DeepSeek API 余额并通过生成的 Remote 服务暴露给 Web GUI。"
 kind: "package-reference"
 ---
 
@@ -9,7 +9,7 @@ kind: "package-reference"
 
 ## 概述
 
-`dsh-api-credit-widget` 轮询 DeepSeek 的 `GET /user/balance` 接口，并通过生成的 `credit` Remote 命名空间把每个 provider 的最新余额快照暴露给浏览器——包括一元 `list`、`refresh` 以及实时 `watch` 流。它复用 `dsh-llm-deepseek` 所使用的同一 `DEEPSEEK_API_KEY` 凭证，冷启动时用短退避重试初次拉取以避免停留在错误状态，重取失败时保留上一次成功的快照，并按确定性顺序（美元优先）排列币种。它不注册任何面向模型的输入；其输出由侧边栏 widget 渲染。
+`dsh-api-credit-widget` 轮询 DeepSeek 的 `GET /user/balance` 接口，并通过生成的 `credit` Remote 命名空间把每个 provider 的最新余额快照暴露给浏览器——包括一元 `list`、`refresh` 以及实时 `watch` 流。它复用 `dsh-llm-deepseek` 所使用的同一 `DEEPSEEK_API_KEY` 凭证，冷启动时用短退避重试初次拉取以避免停留在错误状态，重取失败时保留上一次成功的快照，并按确定性顺序（美元优先）排列币种。它不注册任何面向模型的输入；其输出由会话头部 widget 渲染。
 
 ## 目录
 
@@ -60,7 +60,7 @@ controller 是一个拥有 `credit` 命名空间的 `TypertRemoteService`。它�
 <a id="further-exploration"></a>
 ## 进一步探索
 
-- [浏览器余额 widget](../../client/ui-api-credit-widget/README.zh.md)——渲染本服务的侧边栏 pill 与弹层。
+- [浏览器余额 widget](../../client/ui-api-credit-widget/README.zh.md)——渲染本服务的会话头部 chip 与弹层。
 - [DeepSeek adapter](../../llm/llm-deepseek/README.zh.md)——本包复用的凭证与 base URL 所属的 provider。
 
 -----
@@ -72,7 +72,7 @@ controller 是一个拥有 `credit` 命名空间的 `TypertRemoteService`。它�
 
 #### KV Cache 影响
 
-无直接影响；余额只渲染在浏览器页脚，绝不进入模型上下文。
+无直接影响；余额只渲染在浏览器会话头部，绝不进入模型上下文。
 
 ## 已知限制与延期工作
 

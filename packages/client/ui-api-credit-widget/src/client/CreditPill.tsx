@@ -1,7 +1,8 @@
 /**
- * Sidebar credit pill + popover. Registered into `sidebar.footer.action`; the
- * pill shows a status/composition ring and the primary balance, and a click
- * opens a viewport-clamped, portaled card with the full breakdown.
+ * Session-header credit chip + popover. Registered into
+ * `conversation.session.header.utilities`; the chip shows a status/composition
+ * ring and the primary balance, and a click opens a viewport-clamped,
+ * portaled card with the full breakdown.
  *
  * Rendered from `remote.credit`, styled with `--dsw-*` tokens and DSH
  * primitives (StateDot, Button, relativeTime) to match the product's language.
@@ -26,10 +27,7 @@ export interface CreditWidgetInjected {
   refresh(this: void): Promise<CreditSnapshot[]>
 }
 
-interface CreditPillProps extends CreditWidgetInjected, PropsLocale<'credit'> {
-  /** Whether the sidebar renders wide content (false = 56px rail). */
-  wide: boolean
-}
+interface CreditPillProps extends CreditWidgetInjected, PropsLocale<'credit'> {}
 
 /** The namespace-bound translate for this widget. */
 type CreditT = PropsLocale<'credit'>['t']
@@ -153,7 +151,7 @@ function BalanceRows({ snapshot, t }: { snapshot: CreditSnapshot; t: CreditT }) 
   )
 }
 
-export function CreditPill({ wide, t, listSnapshots, watchSnapshots, refresh }: CreditPillProps) {
+export function CreditPill({ t, listSnapshots, watchSnapshots, refresh }: CreditPillProps) {
   const [snapshots, setSnapshots] = useState<CreditSnapshot[]>([])
   const [open, setOpen] = useState(false)
   const [refreshing, setRefreshing] = useState(false)
@@ -248,20 +246,17 @@ export function CreditPill({ wide, t, listSnapshots, watchSnapshots, refresh }: 
         type="button"
         className={css.pill}
         data-credit-widget="pill"
-        data-wide={wide}
         aria-expanded={open}
         onClick={() =>{  setOpen(value => !value) }}
         title={snapshot === undefined ? t('pill.loading') : t('pill.title', { label: snapshot.label })}
       >
         <span className={css.pillRing}>
-          <Ring balance={primary} size={wide ? 16 : 18} status={status} />
+          <Ring balance={primary} size={16} status={status} />
         </span>
-        {wide && (
-          <span className={css.pillLabel}>
-            <span className={css.pillVendor}>{snapshot?.label ?? t('pill.fallback')}</span>
-            <span className={css.pillAmount}>{primaryText}</span>
-          </span>
-        )}
+        <span className={css.pillLabel}>
+          <span className={css.pillVendor}>{snapshot?.label ?? t('pill.fallback')}</span>
+          <span className={css.pillAmount}>{primaryText}</span>
+        </span>
       </button>
 
       {open && createPortal(

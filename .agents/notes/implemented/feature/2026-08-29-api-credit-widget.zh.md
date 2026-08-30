@@ -1,4 +1,4 @@
-# Agent Note: API 余额 widget——CreditProvider seam + credit Remote + 侧边栏页脚 pill
+# Agent Note: API 余额 widget——CreditProvider seam + credit Remote + 会话头部 chip
 
 Status: implemented
 
@@ -10,7 +10,7 @@ Status: implemented
 
 ## 决策
 
-参照 agent-team 先例把功能拆成两半：一个轮询并缓存的 host Remote 服务（`@deepseek-ai/dsh-api-credit-widget`），以及一个渲染侧边栏页脚 pill 的浏览器插件（`@deepseek-ai/dsh-client-ui-api-credit-widget`）。
+参照 agent-team 先例把功能拆成两半：一个轮询并缓存的 host Remote 服务（`@deepseek-ai/dsh-api-credit-widget`），以及一个渲染会话头部 chip 的浏览器插件（`@deepseek-ai/dsh-client-ui-api-credit-widget`）。
 
 ### CreditProvider capability seam
 
@@ -24,9 +24,9 @@ Status: implemented
 
 `refresh()` 仅在快照 `ok` 或该 vendor 尚无缓存时才写入，因此瞬时重取失败绝不会用错误状态清空正常余额。构造函数的初次轮询最多重试四次、每次退避 1500ms，使冷启动不会把 widget 停在瞬时错误上。`deepSeekProvider` 用固定的美元优先顺序表归一化币种、未知代码按字母序排后，使主余额数字不会在两次调用间翻转。金额端到端保持字符串（`total`/`granted`/`toppedUp`）——把金额当浮点数是 bug。
 
-### 浏览器 pill
+### 浏览器 chip
 
-浏览器入口挂载生成的 `credit` Remote contribution，注册 `credit` locale 命名空间（zh/en）并把 `locale: 'credit'` 传给 `slots.register`，随后注册进 `sidebar.footer.action`（`id: 'api-credit-widget'`、`order: 10`、`data-credit-widget="pill"`）。pill 显示一个状态/构成环（granted 绿、topped-up 蓝）加主余额；点击打开一个夹紧在视口内的 portal 弹层，含各币种明细、相对拉取时间与充值链接（`https://platform.deepseek.com/top_up`）。所有文案都经 `t` 席位。
+浏览器入口挂载生成的 `credit` Remote contribution，注册 `credit` locale 命名空间（zh/en）并把 `locale: 'credit'` 传给 `slots.register`，随后注册进 `conversation.session.header.utilities`（`id: 'api-credit-widget'`、`order: 10`、`data-credit-widget="pill"`）。chip 显示一个状态/构成环（granted 绿、topped-up 蓝）加主余额；点击打开一个夹紧在视口内的 portal 弹层，含各币种明细、相对拉取时间与充值链接（`https://platform.deepseek.com/top_up`）。所有文案都经 `t` 席位。
 
 ## 考虑过的替代方案
 

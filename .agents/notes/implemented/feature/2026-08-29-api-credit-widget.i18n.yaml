@@ -2,5 +2,5 @@
 # side as of the last confirmed-consistent state. Both languages carry equal authority;
 # after editing either side, bring the other along and re-record with:
 #   pnpm run verify-translation-pairing --write .agents/notes/implemented/feature/2026-08-29-api-credit-widget.md
-2026-08-29-api-credit-widget.md: d0dddfa39068cde50e984d5dfc38ec9d2a882d6a
-2026-08-29-api-credit-widget.zh.md: fb53a6bdb97deb1c2c60e4305f1eb1ee6a4305e5
+2026-08-29-api-credit-widget.md: 37bb889da283aa8a0559bd6cfe8026dfa35a24b0
+2026-08-29-api-credit-widget.zh.md: 569afa518c1bbe6b3c8786f9830fb726ee18d198

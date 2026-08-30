@@ -40,7 +40,6 @@ function watchOnce(initial: CreditSnapshot[]): () => AsyncIterable<CreditSnapsho
 }
 
 interface RenderProps {
-  wide?: boolean
   snapshots?: CreditSnapshot[]
   listSnapshots?: () => Promise<CreditSnapshot[]>
   refresh?: () => Promise<CreditSnapshot[]>
@@ -48,13 +47,11 @@ interface RenderProps {
 
 function renderPill(options: RenderProps = {}) {
   const {
-    wide = true,
     snapshots = [],
     listSnapshots = async () => [],
     refresh = async () => [],
   } = options
   const injected = {
-    wide,
     t,
     listSnapshots: vi.fn(listSnapshots),
     watchSnapshots: watchOnce(snapshots),
@@ -74,13 +71,6 @@ describe('CreditPill', () => {
     expect(pill.getAttribute('aria-expanded')).toBe('false')
     expect(within(pill).getByText('Credit')).toBeTruthy()
     expect(within(pill).getByText('—')).toBeTruthy()
-  })
-
-  it('renders only the ring in the collapsed rail', () => {
-    renderPill({ wide: false })
-    const pill = screen.getByRole('button')
-    expect(within(pill).queryByText('Credit')).toBeNull()
-    expect(within(pill).queryByText('—')).toBeNull()
   })
 
   it('shows the primary balance and opens the breakdown popover', async () => {
@@ -172,7 +162,6 @@ describe('CreditPill', () => {
     const listSnapshots = vi.fn(async () => [snapshot()])
     render(
       <CreditPill
-        wide
         t={t}
         listSnapshots={listSnapshots}
         watchSnapshots={() => (async function* () { throw new Error('dropped') })()}
@@ -273,7 +262,7 @@ describe('CreditPill', () => {
       yield await gate
     }
     const { unmount } = render(
-      <CreditPill wide t={t} listSnapshots={async () => []} watchSnapshots={() => watch()} refresh={async () => []} />,
+      <CreditPill t={t} listSnapshots={async () => []} watchSnapshots={() => watch()} refresh={async () => []} />,
     )
     const pill = screen.getByRole('button')
     await waitFor(() =>{  expect(pill.getAttribute('title')).toBe('DeepSeek credit') })
@@ -287,7 +276,6 @@ describe('CreditPill', () => {
     const listSnapshots = vi.fn(async () => { throw new Error('offline') })
     render(
       <CreditPill
-        wide
         t={t}
         listSnapshots={listSnapshots}
         watchSnapshots={() => (async function* () { throw new Error('dropped') })()}
@@ -306,7 +294,7 @@ describe('CreditPill', () => {
       yield await pending
     }
     const { unmount } = render(
-      <CreditPill wide t={t} listSnapshots={listSnapshots} watchSnapshots={() => watch()} refresh={async () => []} />,
+      <CreditPill t={t} listSnapshots={listSnapshots} watchSnapshots={() => watch()} refresh={async () => []} />,
     )
     await waitFor(() =>{  expect(screen.getByRole('button').getAttribute('title')).toBe('Credit — loading') })
     unmount()
