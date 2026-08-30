@@ -130,7 +130,7 @@ describe('CreditController', () => {
     const ctx = new Context()
     ctx.provide('credentials', {
       resolve: async (ref: string) => {
-        resolved.push(String(ref))
+        resolved.push(ref)
         return { value: 'k', source: 'memory' }
       },
     })

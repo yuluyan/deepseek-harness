@@ -2,6 +2,7 @@
 import { Context, Service } from '@deepseek-ai/cordis'
 import { describe, expect, it, vi } from 'vitest'
 import type { CreditSnapshot } from '@deepseek-ai/dsh-api-credit-widget/types'
+import type { RemoteResult } from '@deepseek-ai/dsh-typert-protocol'
 import { LocaleRuntime } from '@deepseek-ai/dsh-client-locale/client'
 import { SlotRegistry } from '@deepseek-ai/dsh-client-ui-renderer/client'
 import { CreditPill, type CreditWidgetInjected } from '../src/client/CreditPill.tsx'
@@ -23,9 +24,9 @@ class RemoteService extends Service {
 async function bench(options: { registrationFailure?: boolean } = {}) {
   const ctx = new Context()
   const remote = new RemoteService(ctx)
-  const list = vi.fn(async () => ({ ok: true as const, value: [] as CreditSnapshot[] }))
+  const list = vi.fn(async (): Promise<RemoteResult<CreditSnapshot[]>> => ({ ok: true, value: [] }))
   const watch = vi.fn(() => (async function* () { yield [] as CreditSnapshot[] })())
-  const refresh = vi.fn(async () => ({ ok: true as const, value: [] as CreditSnapshot[] }))
+  const refresh = vi.fn(async (): Promise<RemoteResult<CreditSnapshot[]>> => ({ ok: true, value: [] }))
   ctx.provide('remote.credit', { list, watch, refresh })
   ctx.provide('locale', new LocaleRuntime(ctx))
   await ctx.plugin(SlotRegistry).await()
