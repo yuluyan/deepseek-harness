@@ -1,7 +1,7 @@
 {
   "name": "@deepseek-ai/dsh-web-app",
   "description": "The dsh browser-surface bundle: the web patch layer over dsh-base plus the runtime glue plugin (frontend dist serving, web-surface prompt, bash runtime variables, URL line)",
-  "version": "0.1.2-alpha.1",
+  "version": "0.1.2-alpha.2",
   "publishConfig": {
     "access": "public"
   },
@@ -72,12 +72,14 @@
     "@deepseek-ai/dsh-client-ui-settings-plugin-inventory": "workspace:^",
     "@deepseek-ai/dsh-client-ui-permission-presets": "workspace:^",
     "@deepseek-ai/dsh-client-ui-plan": "workspace:^",
+    "@deepseek-ai/dsh-client-ui-schedule": "workspace:^",
     "@deepseek-ai/dsh-client-ui-session": "workspace:^",
     "@deepseek-ai/dsh-client-ui-settings-plugins": "workspace:^",
     "@deepseek-ai/dsh-client-ui-user-questions": "workspace:^",
     "@deepseek-ai/dsh-client-ui-settings": "workspace:^",
     "@deepseek-ai/dsh-client-ui-settings-general": "workspace:^",
     "@deepseek-ai/dsh-client-ui-sidebar": "workspace:^",
+    "@deepseek-ai/dsh-client-ui-api-credit-widget": "workspace:^",
     "@deepseek-ai/dsh-client-ui-skill": "workspace:^",
     "@deepseek-ai/dsh-client-ui-input-trigger": "workspace:^",
     "@deepseek-ai/dsh-client-ui-reference": "workspace:^",
@@ -107,6 +109,7 @@
     "@deepseek-ai/dsh-session-log-export": "workspace:^",
     "@deepseek-ai/dsh-session-stats": "workspace:^",
     "@deepseek-ai/dsh-api-session-controller": "workspace:^",
+    "@deepseek-ai/dsh-api-credit-widget": "workspace:^",
     "@deepseek-ai/dsh-api-settings-controller": "workspace:^",
     "@deepseek-ai/dsh-api-workspace-controller": "workspace:^",
     "@deepseek-ai/dsh-subprocess": "workspace:^",
